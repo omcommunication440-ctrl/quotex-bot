@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QUOTEX V16 FIXED</title>
+<title>QUOTEX V16 - FIXED</title>
 <style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:20px;margin:0}
-.box{border:1px solid #333;border-radius:20px;padding:25px;margin-top:25px;background:#121212}
+body{background:#0a0a0a;color:white;font-family:Arial;text-align:center;padding:20px}
+.box{border:1px solid #333;border-radius:20px;padding:25px;margin-top:30px;background:#121212}
 .live{color:#00ff88;font-size:26px;font-weight:bold}
-.call{font-size:30px;margin:15px 0;font-weight:bold}
-.entry{color:#ffcc00;font-size:24px;font-weight:bold;margin:10px 0}
-.curr{color:#aaa;font-size:16px}
-.btn{width:100%;padding:18px;background:#00ff88;border:none;border-radius:15px;font-size:20px;font-weight:bold;margin-top:20px;color:#000}
+.call{font-size:30px;margin:15px 0}
+.entry{color:#ffcc00;font-size:26px;font-weight:bold;margin:10px 0}
+.btn{width:100%;padding:18px;background:#00ff88;border:none;border-radius:15px;font-size:22px;font-weight:bold;margin-top:20px;color:#000}
 </style>
 </head>
 <body>
@@ -19,32 +18,36 @@ body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:2
 <div class="box">
 <div id="pair" class="live">EUR/USD - LIVE</div>
 <div id="signal" class="call">🔼 CALL UP 🟢</div>
-<div id="current" class="curr">CURRENT: --:--:--</div>
+<div id="current">CURRENT: --:--:--</div>
 <div id="entry" class="entry">ENTRY: --:--</div>
-<div style="margin-top:10px">EXPIRY: 1 MIN</div>
+<div>EXPIRY: 1 MIN</div>
 </div>
-<button class="btn" onclick="newSignal()">NEW SIGNAL</button>
-
+<button class="btn" onclick="generate()">NEW SIGNAL</button>
 <script>
-function getNextCandle(){
+function getNext(){
+ let n=new Date();
+ let nx=new Date(n);
+ nx.setMinutes(n.getMinutes()+1);
+ nx.setSeconds(0);
+ nx.setMilliseconds(0);
+ if((nx-n)/1000<5){nx.setMinutes(nx.getMinutes()+1);}
+ return nx;
+}
+function f1(d){return String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0')+" IST";}
+function f2(d){return String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0')+":"+String(d.getSeconds()).padStart(2,'0')+" IST";}
+function generate(){
+ let pairs=["EUR/USD","GBP/USD","USD/JPY"];
+ let sig=["🔼 CALL UP 🟢","🔽 PUT DOWN 🔴"];
+ let p=pairs[Math.floor(Math.random()*pairs.length)];
+ let s=sig[Math.floor(Math.random()*sigs.length)];
  let now=new Date();
- let next=new Date(now);
- next.setMinutes(now.getMinutes()+1);
- next.setSeconds(0);
- next.setMilliseconds(0);
- let diff = (next - now)/1000;
- if(diff < 5){
-   next.setMinutes(next.getMinutes()+1);
- }
- return next;
+ let ent=getNext();
+ document.getElementById('pair').innerText=p+" - LIVE";
+ document.getElementById('signal').innerText=s;
+ document.getElementById('current').innerText="CURRENT: "+f2(now);
+ document.getElementById('entry').innerText="ENTRY: "+f1(ent);
 }
-function fmt_HH_MM(d){
- return String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0')+" IST";
-}
-function fmt_HH_MM_SS(d){
- return String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0')+":"+String(d.getSeconds()).padStart(2,'0')+" IST";
-}
-function newSignal(){
- let pairs=["EUR/USD","GBP/USD","USD/JPY","AUD/USD"];
- let sigs=["🔼 CALL UP 🟢","🔽 PUT DOWN 🔴"];
- let p=p
+window.onload=function(){generate(); setInterval(function(){document.getElementById('current').innerText="CURRENT: "+f2(new Date());},1000);};
+</script>
+</body>
+</html>
