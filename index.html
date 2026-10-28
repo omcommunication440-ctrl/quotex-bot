@@ -1,1 +1,61 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QUOTEX FAST</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}body{background:#0a0e1a;color:#fff;padding:15px}.h{background:linear-gradient(90deg,#00ff88,#00ccff);padding:15px;border-radius:15px;text-align:center;color:#000;font-weight:bold;font-size:20px}.c{background:#151b2e;border:2px solid #00ff88;border-radius:20px;padding:20px;text-align:center;margin-top:15px}.p{font-size:32px;font-weight:bold}.s{font-size:42px;font-weight:900;margin:12px 0}.CALL{color:#00ff88}.PUT{color:#ff4444}.e{font-size:26px;color:#ffcc00;font-weight:bold}.t{font-size:60px;font-weight:900}.b{width:100%;padding:16px;border:none;border-radius:12px;font-size:18px;font-weight:bold;margin-top:10px}.g{background:#00ff88;color:#000}.o{background:#222a44;color:#fff}</style></head><body><div class="h">⚡ QUOTEX FAST APP ⚡</div><div class="c"><div style="color:#00ff88">● LIVE FAST</div><div class="p" id="p">EUR/USD</div><div class="s" id="s">WAIT...</div><div class="e" id="e">--:--:--</div><div class="t" id="t">--</div><button class="b g" onclick="gen()">⚡ NEW SIGNAL</button><button class="b o" onclick="auto=!auto;this.innerText=auto?'AUTO ON':'AUTO OFF';if(auto)st()">AUTO ON</button></div><script>const P=["EUR/USD","GBP/USD","USD/JPY","AUD/JPY","EUR/JPY"];let auto=true,iv,ct;function gen(){let pr=P[Math.floor(Math.random()*P.length)],d=Math.random()>0.5?"CALL":"PUT",e=new Date(Date.now()+60000);document.getElementById("p").innerText=pr;let el=document.getElementById("s");el.innerText=d=="CALL"?"CALL UP 🟢":"PUT DOWN 🔴";el.className="s "+d;document.getElementById("e").innerText=e.toLocaleTimeString("en-IN",{hour12:false})+" IST";let s=60;clearInterval(ct);document.getElementById("t").innerText=s;ct=setInterval(()=>{s--;document.getElementById("t").innerText=s;if(s<=0)clearInterval(ct)},1000);if(navigator.vibrate)navigator.vibrate(200)}function st(){clearInterval(iv);iv=setInterval(gen,65000)}gen();st();</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUOTEX V16 LIVE</title>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:Arial;text-align:center;padding:20px}
+.card{background:#151515;border:1px solid #333;border-radius:15px;padding:20px;max-width:400px;margin:20px auto}
+.btn{background:#00ff88;color:#000;padding:15px 30px;border:none;border-radius:10px;font-weight:bold;font-size:18px;width:100%;cursor:pointer}
+.pair{font-size:28px;font-weight:bold;color:#00ff88}
+.dir{font-size:32px;margin:15px 0}
+.time{color:#aaa;font-size:14px}
+.entry{color:#ffcc00;font-size:20px;font-weight:bold;margin:10px 0}
+</style>
+</head>
+<body>
+<h2>⚡️ QUOTEX V16 - LIVE</h2>
+<div class="card" id="card">
+<div class="pair" id="pair">EUR/USD - LIVE</div>
+<div class="dir" id="dir">WAIT</div>
+<div class="time" id="ctime">CURRENT: --:--:-- IST</div>
+<div class="entry" id="etime">ENTRY: --:--:-- IST</div>
+<div style="margin-top:10px">EXPIRY: 1 MIN</div>
+</div>
+<button class="btn" onclick="gen()">NEW SIGNAL</button>
+<br><br>
+<button class="btn" style="background:#222;color:#fff" onclick="toggleAuto()" id="autoBtn">AUTO OFF</button>
+
+<script>
+const PAIRS = ["EUR/USD","GBP/USD","USD/JPY","AUD/JPY","EUR/JPY","GBP/JPY"];
+let auto = false, interval;
+
+function getIST(){
+  return new Date().toLocaleString("en-GB", {timeZone:"Asia/Kolkata", hour12:false}).split(', ')[1];
+}
+function getEntryIST(){
+  let d = new Date(new Date().toLocaleString("en-US", {timeZone:"Asia/Kolkata"}));
+  d.setMinutes(d.getMinutes()+1);
+  return d.toLocaleTimeString("en-GB", {hour12:false});
+}
+
+function gen(){
+  let pair = PAIRS[Math.floor(Math.random()*PAIRS.length)];
+  let dir = Math.random()>0.5 ? "🔼 CALL UP 🟢" : "🔽 PUT DOWN 🔴";
+  document.getElementById('pair').innerText = pair + " - LIVE";
+  document.getElementById('dir').innerText = dir;
+  document.getElementById('ctime').innerText = "CURRENT: " + getIST() + " IST";
+  document.getElementById('etime').innerText = "ENTRY: " + getEntryIST() + " IST";
+  if(navigator.vibrate) navigator.vibrate(100);
+}
+function toggleAuto(){
+  auto = !auto;
+  document.getElementById('autoBtn').innerText = auto ? "AUTO ON ✅" : "AUTO OFF";
+  if(auto){ interval = setInterval(gen, 60000); gen(); }
+  else clearInterval(interval);
+}
+gen();
+setInterval(()=>{ document.getElementById('ctime').innerText = "CURRENT: " + getIST() + " IST"; }, 1000);
+</script>
+</body>
+</html>
